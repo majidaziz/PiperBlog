@@ -33,7 +33,9 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="ic_heart" />
+                                      <entry key="outputName" value="ic_heart_click" />
+                                      <entry key="theme" value="CUSTOM" />
+                                      <entry key="themeColor" value="e5000c" />
                                     </map>
                                   </option>
                                 </PersistentState>
