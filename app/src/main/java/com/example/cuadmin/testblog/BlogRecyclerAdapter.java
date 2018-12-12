@@ -2,6 +2,7 @@ package com.example.cuadmin.testblog;
 
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -11,9 +12,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.w3c.dom.Text;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapter.ViewHolder>
@@ -21,6 +35,9 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
 
     public List<BlogPost> blog_list;
     public Context context;
+
+    private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth firebaseAuth;
 
 
     public BlogRecyclerAdapter(List<BlogPost> blog_list)
@@ -35,14 +52,18 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.blog_list_item, parent, false);
 
         context = parent.getContext();
-
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position)
+    public void onBindViewHolder(final ViewHolder holder, int position)
     {
 
+
+        final String blogPostId = blog_list.get(position).BlogPostId;
+        final String currentUserId = firebaseAuth.getCurrentUser().getUid();
         String desc_data = blog_list.get(position).getDesc();
         holder.setDescText(desc_data);
 
@@ -51,10 +72,37 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
 
         String user_id = blog_list.get(position).getUser_id();
 
+        firebaseFirestore.collection("User").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    String userName = task.getResult().getString("name");
+                    String userImage = task.getResult().getString("images");
+
+                    holder.setUserData(userName, userImage);
+                }
+                else {
+
+                }
+            }
+        });
+
         long millisex = blog_list.get(position).getTimestamp().getTime();
         String dateString = DateFormat.format("MM/dd/yyyy", new Date(millisex)).toString();
 
         holder.setTime(dateString);
+
+        holder.blogLikeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Map<String, Object> likesMap = new HashMap<>();
+                likesMap.put("timestamp", FieldValue.serverTimestamp());
+
+                firebaseFirestore.collection("Posts/" + blogPostId + "/Likes").document(currentUserId).set(likesMap);
+
+            }
+        });
     }
 
     @Override
@@ -71,10 +119,18 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
         private ImageView blogImageView;
         private TextView blogDate;
 
+        private TextView blogUsername;
+        private CircleImageView blogUserImage;
+
+        private ImageView blogLikeBtn;
+        private TextView blogLikeCount;
+
         public ViewHolder(View itemView)
         {
             super(itemView);
             mView = itemView;
+
+            blogLikeBtn = mView.findViewById(R.id.blog_like_btn);
 
         }
 
@@ -87,7 +143,9 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
         public void setBlogImage(String downloadUri)
         {
             blogImageView = mView.findViewById(R.id.blog_image);
-            Glide.with(context).load(downloadUri).into(blogImageView);
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.placeholder(R.drawable.maine_coon);
+            Glide.with(context).applyDefaultRequestOptions(requestOptions).load(downloadUri).into(blogImageView);
         }
 
         public void setTime(String date)
@@ -95,6 +153,17 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
 
             blogDate = mView.findViewById(R.id.blog_date);
             blogDate.setText(date);
+        }
+
+        public void setUserData(String name, String image){
+            blogUserImage = mView.findViewById(R.id.blog_user_image);
+            blogUsername = mView.findViewById(R.id.blog_user_name);
+
+            blogUsername.setText(name);
+
+            RequestOptions placeHolderOption = new RequestOptions();
+            placeHolderOption.placeholder(R.drawable.maine_coon);
+            Glide.with(context).applyDefaultRequestOptions(placeHolderOption).load(image).into(blogUserImage);
         }
     }
 }
