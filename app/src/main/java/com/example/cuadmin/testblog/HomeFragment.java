@@ -60,7 +60,7 @@ public class HomeFragment extends Fragment
             firstQuery.addSnapshotListener(getActivity(),new EventListener<QuerySnapshot>() {
                 @Override
                 public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                    //might be unneccessary if statement
+                    //unneccessary if statement
                     //if(documentSnapshots != null) {
                     for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
 

@@ -21,6 +21,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Text;
 
@@ -63,6 +64,7 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
     public void onBindViewHolder(final ViewHolder holder, int position)
     {
 
+        holder.setIsRecyclable(false);
 
         final String blogPostId = blog_list.get(position).BlogPostId;
         final String currentUserId = firebaseAuth.getCurrentUser().getUid();
@@ -93,6 +95,21 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
         String dateString = DateFormat.format("MM/dd/yyyy", new Date(millisex)).toString();
 
         holder.setTime(dateString);
+
+        //count likes count, Count Dooku
+        firebaseFirestore.collection("Posts/" + blogPostId + "/Likes").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                if(!documentSnapshots.isEmpty()){
+                    int count = documentSnapshots.size();
+                    holder.updateLikesCount(count);
+                }
+                else{
+                    holder.updateLikesCount(0);
+                }
+            }
+        });
+
 
         //Get num likes
         firebaseFirestore.collection("Posts/" + blogPostId + "/Likes").document(currentUserId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -193,6 +210,11 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
             RequestOptions placeHolderOption = new RequestOptions();
             placeHolderOption.placeholder(R.drawable.maine_coon);
             Glide.with(context).applyDefaultRequestOptions(placeHolderOption).load(image).into(blogUserImage);
+        }
+
+        public void updateLikesCount(int count){
+            blogLikeCount = mView.findViewById(R.id.blog_like_count);
+            blogLikeCount.setText(count + " Likes");
         }
     }
 }

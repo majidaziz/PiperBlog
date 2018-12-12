@@ -20,15 +20,6 @@
         tools:layout_editor_absoluteX="169dp"
         tools:layout_editor_absoluteY="119dp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/blog_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="473dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="191dp" />
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"

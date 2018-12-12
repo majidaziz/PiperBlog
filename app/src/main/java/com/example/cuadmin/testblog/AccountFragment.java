@@ -41,7 +41,7 @@ public class AccountFragment extends Fragment
                              Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
-        blog_list = new ArrayList<>();
+        /*blog_list = new ArrayList<>();
         //blog_list_view = getActivity().findViewById(R.id.blog_list_view);
         blog_list_view = view.findViewById(R.id.blog_list_view);
 
@@ -69,7 +69,7 @@ public class AccountFragment extends Fragment
                 }
                 //}
             }
-        });
+        });*/
         // Inflate the layout for this fragment
         return view;
     }
