@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
 
         mainToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mainToolbar);
-        getSupportActionBar().setTitle("Main Page");
+        getSupportActionBar().setTitle("Piper");
 
         //if(mAuth.getCurrentUser() != null) {
 
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View v)
                 {
-                    Intent postIntent = new Intent(MainActivity.this, PostActivity.class);
+                    Intent postIntent = new Intent(MainActivity.this, UploadPost.class);
                     startActivity(postIntent);
                 }
             });
