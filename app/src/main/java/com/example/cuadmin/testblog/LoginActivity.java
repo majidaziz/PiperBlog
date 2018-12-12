@@ -103,7 +103,6 @@ public class LoginActivity extends AppCompatActivity
                     loginEmailText.setText("");
                     loginPassText.setText("");
                 }
-
             }
         });
     }
