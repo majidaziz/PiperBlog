@@ -22,7 +22,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+{
 
     private Toolbar mainToolbar;
     private FloatingActionButton addPostBtn;
@@ -36,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -58,10 +60,13 @@ public class MainActivity extends AppCompatActivity {
             accountFragment = new AccountFragment();
 
             //replaceFragment(homeFragment);
-            mainBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            mainBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener()
+            {
                 @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    switch (item.getItemId()) {
+                public boolean onNavigationItemSelected(@NonNull MenuItem item)
+                {
+                    switch (item.getItemId())
+                    {
                         case R.id.bottom_home:
                             replaceFragment(homeFragment);
                             return true;
@@ -79,9 +84,11 @@ public class MainActivity extends AppCompatActivity {
             });
 
             addPostBtn = findViewById(R.id.floatingActionButton2);
-            addPostBtn.setOnClickListener(new View.OnClickListener() {
+            addPostBtn.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
                     Intent postIntent = new Intent(MainActivity.this, PostActivity.class);
                     startActivity(postIntent);
                 }
@@ -92,33 +99,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.example_menu, menu);
         return true;
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart()
+    {
         super.onStart();
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if(currentUser == null){
+        if(currentUser == null)
+        {
             sendToLogin();
         }
-        else{
+        else
+        {
             current_user_id = mAuth.getCurrentUser().getUid();
-            firebaseFirestore.collection("User").document(current_user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            firebaseFirestore.collection("User").document(current_user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>()
+            {
                 @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if(task.isSuccessful()){
-                        if(!task.getResult().exists()){
+                public void onComplete(@NonNull Task<DocumentSnapshot> task)
+                {
+                    if(task.isSuccessful())
+                    {
+                        if(!task.getResult().exists())
+                        {
                             Intent intent = new Intent(MainActivity.this, SetupActivity.class);
                             startActivity(intent);
                             finish();
                         }
                     }
-                    else{
+                    else
+                    {
                         String errorMessage = task.getException().getMessage();
                         Toast.makeText(getApplicationContext(), "Error : " + errorMessage, Toast.LENGTH_LONG).show();
                     }
@@ -128,8 +144,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch(item.getItemId())
+        {
             case R.id.item2:
                 logout();
                 return true;
@@ -145,18 +163,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void sendToLogin(){
+    private void sendToLogin()
+    {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
     }
 
-    private void logout(){
+    private void logout()
+    {
         mAuth.signOut();
         sendToLogin();
     }
 
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment)
+    {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_container, fragment);
         fragmentTransaction.commit();

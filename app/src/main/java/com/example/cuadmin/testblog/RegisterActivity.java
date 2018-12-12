@@ -17,7 +17,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity
+{
 
     private EditText reg_email_field;
     private EditText reg_pass_field;
@@ -29,7 +30,8 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
@@ -43,39 +45,48 @@ public class RegisterActivity extends AppCompatActivity {
         reg_progress = findViewById(R.id.login_progress);
 
         //User already has account, takes them to login activity
-        reg_login_btn.setOnClickListener(new View.OnClickListener() {
+        reg_login_btn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 finish();
             }
         });
 
 
         //Registers new account and adds to Firebase Authentication
-        reg_btn.setOnClickListener(new View.OnClickListener() {
+        reg_btn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 String email = reg_email_field.getText().toString();
                 String pass = reg_pass_field.getText().toString();
                 String confirm_pass = reg_confirm_pass_field.getText().toString();
 
-                if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(pass) & !TextUtils.isEmpty(confirm_pass)){
+                if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(pass) & !TextUtils.isEmpty(confirm_pass))
+                {
                     if(pass.equals(confirm_pass)){
 
                         reg_progress.setVisibility(View.VISIBLE);
 
-                        mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>()
+                        {
                             @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+                            public void onComplete(@NonNull Task<AuthResult> task)
+                            {
 
-                                if(task.isSuccessful()){
+                                if(task.isSuccessful())
+                                {
 
                                     Intent setupIntent = new Intent(RegisterActivity.this, SetupActivity.class);
                                     startActivity(setupIntent);
                                     finish();
 
                                 }
-                                else{
+                                else
+                                {
 
                                     String errorMessage = task.getException().getMessage();
                                     Toast.makeText(getApplicationContext(),"Error :" + errorMessage, Toast.LENGTH_LONG).show();
@@ -88,7 +99,8 @@ public class RegisterActivity extends AppCompatActivity {
                         });
 
                     }
-                    else{
+                    else
+                    {
                         Toast.makeText(getApplicationContext(), "Confirm Password and Password Field doesn't match.", Toast.LENGTH_LONG).show();
                     }
                 }
@@ -97,16 +109,19 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser == null){
+        if(currentUser == null)
+        {
             //sendToMain();
         }
     }
 
-    private void sendToMain(){
+    private void sendToMain()
+    {
         Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
         startActivity(mainIntent);
         finish();

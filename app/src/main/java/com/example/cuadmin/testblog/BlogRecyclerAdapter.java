@@ -16,18 +16,21 @@ import java.util.Date;
 import java.util.List;
 
 
-public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapter.ViewHolder> {
+public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapter.ViewHolder>
+{
 
     public List<BlogPost> blog_list;
     public Context context;
 
 
-    public BlogRecyclerAdapter(List<BlogPost> blog_list){
+    public BlogRecyclerAdapter(List<BlogPost> blog_list)
+    {
         this.blog_list = blog_list;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.blog_list_item, parent, false);
 
@@ -37,7 +40,8 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position)
+    {
 
         String desc_data = blog_list.get(position).getDesc();
         holder.setDescText(desc_data);
@@ -54,34 +58,40 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return blog_list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder
+    {
 
         private View mView;
         private TextView descView;
         private ImageView blogImageView;
         private TextView blogDate;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView)
+        {
             super(itemView);
             mView = itemView;
 
         }
 
-        public void setDescText(String descText){
+        public void setDescText(String descText)
+        {
             descView = mView.findViewById(R.id.blog_desc);
             descView.setText(descText);
         }
 
-        public void setBlogImage(String downloadUri){
+        public void setBlogImage(String downloadUri)
+        {
             blogImageView = mView.findViewById(R.id.blog_image);
             Glide.with(context).load(downloadUri).into(blogImageView);
         }
 
-        public void setTime(String date){
+        public void setTime(String date)
+        {
 
             blogDate = mView.findViewById(R.id.blog_date);
             blogDate.setText(date);

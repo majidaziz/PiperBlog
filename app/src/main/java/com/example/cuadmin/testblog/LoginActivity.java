@@ -17,7 +17,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity
+{
 
     private EditText loginEmailText;
     private EditText loginPassText;
@@ -29,7 +30,8 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar loginProgress;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -42,20 +44,22 @@ public class LoginActivity extends AppCompatActivity {
         loginProgress = findViewById(R.id.login_progress);
 
 
-        loginRegBtn.setOnClickListener(new View.OnClickListener() {
+        loginRegBtn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent regIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(regIntent);
 
             }
         });
 
-        loginBtn.setOnClickListener(new View.OnClickListener() {
+        loginBtn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-
-
+            public void onClick(View v)
+            {
 
                 String loginEmail = loginEmailText.getText().toString();
                 String loginPass = loginPassText.getText().toString();
@@ -63,16 +67,20 @@ public class LoginActivity extends AppCompatActivity {
                 if(!TextUtils.isEmpty(loginEmail) && !TextUtils.isEmpty(loginPass)){
                     loginProgress.setVisibility(View.VISIBLE);
 
-                    mAuth.signInWithEmailAndPassword(loginEmail, loginPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    mAuth.signInWithEmailAndPassword(loginEmail, loginPass).addOnCompleteListener(new OnCompleteListener<AuthResult>()
+                    {
                         @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+                        public void onComplete(@NonNull Task<AuthResult> task)
+                        {
 
-                            if(task.isSuccessful()){
+                            if(task.isSuccessful())
+                            {
 
                                 sendToMain();
 
                             }
-                            else{
+                            else
+                            {
                                 String errorMessage = task.getException().getMessage();
                                 Toast.makeText(LoginActivity.this, "Error : " + errorMessage, Toast.LENGTH_LONG).show();
                             }
@@ -87,7 +95,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart()
+    {
         super.onStart();
 
         FirebaseUser currentUSer = mAuth.getCurrentUser();
@@ -97,7 +106,8 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void sendToMain(){
+    private void sendToMain()
+    {
         Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(mainIntent);
         finish();

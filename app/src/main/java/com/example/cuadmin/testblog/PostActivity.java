@@ -42,7 +42,8 @@ import java.util.UUID;
 
 import id.zelory.compressor.Compressor;
 
-public class PostActivity extends AppCompatActivity {
+public class PostActivity extends AppCompatActivity
+{
 
     private Toolbar toolbar;
     private EditText picText;
@@ -60,7 +61,8 @@ public class PostActivity extends AppCompatActivity {
     private Bitmap compressedImageFile;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
@@ -79,7 +81,8 @@ public class PostActivity extends AppCompatActivity {
         postImage = findViewById(R.id.imageView);
         progressbar = findViewById(R.id.progressBar2);
 
-        postImage.setOnClickListener(new View.OnClickListener() {
+        postImage.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 CropImage.activity()
@@ -90,32 +93,40 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
-        postBtn.setOnClickListener(new View.OnClickListener() {
+        postBtn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 final String desc = picText.getText().toString();
-                if(!TextUtils.isEmpty(desc) && postImageUri != null){
+                if(!TextUtils.isEmpty(desc) && postImageUri != null)
+                {
                     progressbar.setVisibility(View.VISIBLE);
                     final String randomName = UUID.randomUUID().toString();
                     StorageReference filePath = storageReference.child("post_images").child(randomName + ".jpg");
-                    filePath.putFile(postImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    filePath.putFile(postImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>()
+                    {
                         @Override
-                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task)
+                        {
                             final String downloadUri = task.getResult().getDownloadUrl().toString();
                             if(task.isSuccessful()){
                                 File newImageFile = new File(postImageUri.getPath());
-                                try{
+                                try
+                                {
                                     compressedImageFile = new Compressor(PostActivity.this).compressToBitmap(newImageFile);
-                                } catch (IOException e){
+                                } catch (IOException e)
+                                {
                                     e.printStackTrace();
                                 }
                                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                                 compressedImageFile.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                                 byte[] thumbData = baos.toByteArray();
                                 UploadTask uploadTask = storageReference.child("post_images/thumbs").child(randomName + ".jpg").putBytes(thumbData);
-                                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
+                                {
                                     @Override
-                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
+                                    {
                                         String downloadthumbUri = taskSnapshot.getDownloadUrl().toString();
                                         Map<String, Object>postMap = new HashMap<>();
                                         postMap.put("image_url", downloadUri);
@@ -123,16 +134,20 @@ public class PostActivity extends AppCompatActivity {
                                         postMap.put("desc", desc);
                                         postMap.put("user_id", current_user_id);
                                         postMap.put("timestamp", FieldValue.serverTimestamp());
-                                        firebaseFirestore.collection("Posts").add(postMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                        firebaseFirestore.collection("Posts").add(postMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>()
+                                        {
                                             @Override
-                                            public void onComplete(@NonNull Task<DocumentReference> task) {
-                                                if(task.isSuccessful()){
+                                            public void onComplete(@NonNull Task<DocumentReference> task)
+                                            {
+                                                if(task.isSuccessful())
+                                                {
                                                     Toast.makeText(getApplicationContext(), "Post was added.", Toast.LENGTH_LONG).show();
                                                     Intent intent = new Intent(PostActivity.this, MainActivity.class);
                                                     startActivity(intent);
                                                     finish();
                                                 }
-                                                else{
+                                                else
+                                                {
                                                     String error = task.getException().getMessage();
                                                     Toast.makeText(getApplicationContext(), "Error : " + error, Toast.LENGTH_LONG).show();
                                                 }
@@ -140,16 +155,19 @@ public class PostActivity extends AppCompatActivity {
                                             }
                                         });
                                     }
-                                }).addOnFailureListener(new OnFailureListener() {
+                                }).addOnFailureListener(new OnFailureListener()
+                                {
                                     @Override
-                                    public void onFailure(@NonNull Exception e) {
+                                    public void onFailure(@NonNull Exception e)
+                                    {
 
                                     }
                                 });
 
 
                             }
-                            else{
+                            else
+                            {
                                 progressbar.setVisibility(View.INVISIBLE);
                                 String error = task.getException().getMessage();
                                 Toast.makeText(getApplicationContext(), "Error : " + error, Toast.LENGTH_LONG).show();
@@ -163,22 +181,28 @@ public class PostActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.example_menu, menu);
         return true;
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
+        {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK)
+            {
                 postImageUri = result.getUri();
                 postImage.setImageURI(postImageUri);
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+            }
+            else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)
+            {
                 Exception error = result.getError();
             }
         }

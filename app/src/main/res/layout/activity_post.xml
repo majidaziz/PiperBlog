@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context=".PostActivity">
 
     <include
@@ -20,7 +21,7 @@
         app:layout_constraintHorizontal_bias="0.578"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressBar2"
-        app:srcCompat="@mipmap/cat_img" />
+        app:srcCompat="@mipmap/ic_hedgehog_round" />
 
     <EditText
         android:id="@+id/descText"
