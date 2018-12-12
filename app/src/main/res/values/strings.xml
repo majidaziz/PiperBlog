@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TestBlog</string>
+    <string name="app_name">Piper</string>
     <string name="pass_hint">Password...</string>
     <string name="email_hint">Email...</string>
     <string name="action_search_text">Search</string>

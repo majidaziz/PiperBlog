@@ -1,5 +1,6 @@
 package com.example.cuadmin.testblog;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -141,7 +142,11 @@ public class PostActivity extends AppCompatActivity
                                             {
                                                 if(task.isSuccessful())
                                                 {
-                                                    Toast.makeText(getApplicationContext(), "Post was added.", Toast.LENGTH_LONG).show();
+                                                    Context context = getApplicationContext();
+                                                    CharSequence msg = "Post was added";
+                                                    int duration = Toast.LENGTH_LONG;
+                                                    Toast toast = Toast.makeText(context,msg,duration);
+                                                    toast.show();
                                                     Intent intent = new Intent(PostActivity.this, MainActivity.class);
                                                     startActivity(intent);
                                                     finish();
@@ -149,7 +154,11 @@ public class PostActivity extends AppCompatActivity
                                                 else
                                                 {
                                                     String error = task.getException().getMessage();
-                                                    Toast.makeText(getApplicationContext(), "Error : " + error, Toast.LENGTH_LONG).show();
+                                                    Context context = getApplicationContext();
+                                                    CharSequence msg = "ERROR: ";
+                                                    int duration = Toast.LENGTH_LONG;
+                                                    Toast toast = Toast.makeText(context,msg + error,duration);
+                                                    toast.show();
                                                 }
                                                 progressbar.setVisibility(View.INVISIBLE);
                                             }
@@ -170,7 +179,11 @@ public class PostActivity extends AppCompatActivity
                             {
                                 progressbar.setVisibility(View.INVISIBLE);
                                 String error = task.getException().getMessage();
-                                Toast.makeText(getApplicationContext(), "Error : " + error, Toast.LENGTH_LONG).show();
+                                Context context = getApplicationContext();
+                                CharSequence msg = "ERROR: ";
+                                int duration = Toast.LENGTH_LONG;
+                                Toast toast = Toast.makeText(context,msg + error,duration);
+                                toast.show();
                             }
                         }
                     });

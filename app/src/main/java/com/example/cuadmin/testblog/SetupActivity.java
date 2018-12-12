@@ -1,6 +1,7 @@
 package com.example.cuadmin.testblog;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -144,8 +145,12 @@ public class SetupActivity extends AppCompatActivity
                                 }
                                 else
                                  {
-                                    String error = task.getException().getMessage();
-                                    Toast.makeText(getApplicationContext(), "(Image Error) " + error, Toast.LENGTH_LONG).show();
+                                    String errormsg = task.getException().getMessage();
+                                    Context context = getApplicationContext();
+                                    CharSequence msg = "ERROR: ";
+                                    int duration = Toast.LENGTH_LONG;
+                                    Toast toast = Toast.makeText(context,msg + errormsg,duration);
+                                    toast.show();
                                     progress_bar.setVisibility(View.INVISIBLE);
                                 }
 
@@ -171,7 +176,11 @@ public class SetupActivity extends AppCompatActivity
                 {
                     if(ContextCompat.checkSelfPermission(SetupActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
                     {
-                        Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_LONG).show();
+                        Context context = getApplicationContext();
+                        CharSequence msg = "Permission Denied ";
+                        int duration = Toast.LENGTH_LONG;
+                        Toast toast = Toast.makeText(context,msg,duration);
+                        toast.show();
                         ActivityCompat.requestPermissions(SetupActivity.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
                     }
                     else
@@ -217,9 +226,12 @@ public class SetupActivity extends AppCompatActivity
                 }
                 else
                 {
-                    String error = task.getException().getMessage();
-                    Toast.makeText(getApplicationContext(), "Firestore " + error, Toast.LENGTH_LONG).show();
-
+                    String errormsg = task.getException().getMessage();
+                    Context context = getApplicationContext();
+                    CharSequence msg = "Firestore ";
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context,msg + errormsg,duration);
+                    toast.show();
                 }
 
             }

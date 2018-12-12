@@ -1,5 +1,6 @@
 package com.example.cuadmin.testblog;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -82,12 +83,25 @@ public class LoginActivity extends AppCompatActivity
                             else
                             {
                                 String errorMessage = task.getException().getMessage();
-                                Toast.makeText(LoginActivity.this, "Error : " + errorMessage, Toast.LENGTH_LONG).show();
+                                Context context = getApplicationContext();
+                                CharSequence msg = "ERROR: ";
+                                int duration = Toast.LENGTH_LONG;
+                                Toast toast = Toast.makeText(context,msg + errorMessage,duration);
+                                toast.show();
                             }
 
                             loginProgress.setVisibility(View.INVISIBLE);
                         }
                     });
+                } else {
+                    Context context = getApplicationContext();
+                    CharSequence msg = "ERROR!";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context,msg,duration);
+                    toast.show();
+
+                    loginEmailText.setText("");
+                    loginPassText.setText("");
                 }
 
             }

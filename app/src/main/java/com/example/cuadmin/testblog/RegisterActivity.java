@@ -1,5 +1,6 @@
 package com.example.cuadmin.testblog;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -89,8 +90,11 @@ public class RegisterActivity extends AppCompatActivity
                                 {
 
                                     String errorMessage = task.getException().getMessage();
-                                    Toast.makeText(getApplicationContext(),"Error :" + errorMessage, Toast.LENGTH_LONG).show();
-
+                                    Context context = getApplicationContext();
+                                    CharSequence msg = "ERROR: ";
+                                    int duration = Toast.LENGTH_LONG;
+                                    Toast toast = Toast.makeText(context,msg + errorMessage,duration);
+                                    toast.show();
                                 }
 
                                 reg_progress.setVisibility(View.INVISIBLE);
@@ -101,7 +105,11 @@ public class RegisterActivity extends AppCompatActivity
                     }
                     else
                     {
-                        Toast.makeText(getApplicationContext(), "Confirm Password and Password Field doesn't match.", Toast.LENGTH_LONG).show();
+                        Context context = getApplicationContext();
+                        CharSequence msg = "Confirm Password & Password Field Do Not Match.";
+                        int duration = Toast.LENGTH_LONG;
+                        Toast toast = Toast.makeText(context,msg,duration);
+                        toast.show();
                     }
                 }
             }
