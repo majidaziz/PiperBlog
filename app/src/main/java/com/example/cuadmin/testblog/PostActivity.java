@@ -61,6 +61,7 @@ public class PostActivity extends AppCompatActivity
     private String current_user_id;
     private Bitmap compressedImageFile;
 
+    private ImageView image_test;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -82,6 +83,7 @@ public class PostActivity extends AppCompatActivity
         postImage = findViewById(R.id.imageView);
         progressbar = findViewById(R.id.progressBar2);
 
+
         postImage.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -98,6 +100,7 @@ public class PostActivity extends AppCompatActivity
         {
             @Override
             public void onClick(View v) {
+
                 final String desc = picText.getText().toString();
                 if(!TextUtils.isEmpty(desc) && postImageUri != null)
                 {
