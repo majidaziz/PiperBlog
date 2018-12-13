@@ -153,6 +153,14 @@ public class MainActivity extends AppCompatActivity
     {
         switch(item.getItemId())
         {
+            case R.id.item1:
+                Context context = getApplicationContext();
+                CharSequence msg = "Under Construction...";
+                int duration = Toast.LENGTH_LONG;
+                Toast toast = Toast.makeText(context,msg,duration);
+                toast.show();
+                return true;
+
             case R.id.item2:
                 logout();
                 return true;
